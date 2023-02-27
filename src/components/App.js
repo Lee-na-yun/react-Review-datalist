@@ -7,8 +7,13 @@ function App() {
   const [order, setOrder] = useState("createdAt");
   const sortedItems = items.sort((a, b) => b[order] - a[order]); //order State값이 createdAt에 있을 때는 최신순으로 정렬되고, rating일 때는 평점이 높은 베스트순으로 정렬이 됨
 
+  const handleNewClick = () => setOrder('createdAt');
+  const handleBestClick = () => setOrder('rating');
+
   return (
     <div>
+        <button onClick={handleNewClick}>최신순</button>
+        <button onClick={handleBestClick}>추천순</button>
       <ReviewList items={sortedItems} />
     </div>
   );
