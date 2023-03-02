@@ -16,18 +16,19 @@ function App() {
     setItems(nextItems);
   };
 
-  const handleLoadClick = async () => {
+  const handleLoad = async () => {
     const {reviews} = await getReviews(); // response body에 있는 reviews라는 값을 Destructuring 하고
     setItems(reviews); // state 변경
   }
+
+  handleLoad();
 
   return (
     <div>
       <button onClick={handleNewClick}>최신순</button>
       <button onClick={handleBestClick}>추천순</button>
       <ReviewList items={sortedItems} onDelete={handleDelete}/>
-      <button onClick={handleLoadClick}>불러오기</button>
-    </div>
+    </div> 
   );
 }
 
