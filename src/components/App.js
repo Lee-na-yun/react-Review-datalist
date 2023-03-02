@@ -1,6 +1,6 @@
 import ReviewList from "./ReviewList";
 //import mockItems from "../mock.json"; // items라는 이름으로 mock.json파일을 import함
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getReviews } from "../api";
 
 function App() {
@@ -17,18 +17,20 @@ function App() {
   };
 
   const handleLoad = async () => {
-    const {reviews} = await getReviews(); // response body에 있는 reviews라는 값을 Destructuring 하고
+    const { reviews } = await getReviews(); // response body에 있는 reviews라는 값을 Destructuring 하고
     setItems(reviews); // state 변경
-  }
+  };
 
-  handleLoad();
+  useEffect(() => {
+    handleLoad();
+  }, []);
 
   return (
     <div>
       <button onClick={handleNewClick}>최신순</button>
       <button onClick={handleBestClick}>추천순</button>
-      <ReviewList items={sortedItems} onDelete={handleDelete}/>
-    </div> 
+      <ReviewList items={sortedItems} onDelete={handleDelete} />
+    </div>
   );
 }
 
