@@ -25,7 +25,7 @@ function App() {
     if (options.offset === 0) {
       setItems(reviews); // offset값이 0일 때 items 전체를 바꾸고
     } else {
-      setItems([...items, ...reviews]); // offset값이 0이 아닐 때는 spread문법으로 요소가 추가된 배열을 만들어 줌
+      setItems((prevItems) => [...prevItems, ...reviews]); // offset값이 0이 아닐 때는 spread문법으로 요소가 추가된 배열을 만들어 줌
     }
     setOffset(options.offset + reviews.length); // offset값 변경
     setHasNext(paging.hasNext);
