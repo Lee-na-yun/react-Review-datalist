@@ -16,14 +16,14 @@ function App() {
     setItems(nextItems);
   };
 
-  const handleLoad = async () => {
-    const { reviews } = await getReviews(); // response body에 있는 reviews라는 값을 Destructuring 하고
+  const handleLoad = async (orderQuery) => {
+    const { reviews } = await getReviews(orderQuery); // response body에 있는 reviews라는 값을 Destructuring 하고
     setItems(reviews); // state 변경
   };
 
   useEffect(() => {
-    handleLoad();
-  }, []);
+    handleLoad(order);
+  }, [order]);
 
   return (
     <div>
