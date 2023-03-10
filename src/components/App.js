@@ -12,6 +12,7 @@ function App() {
   const [offset, setOffset] = useState(0);
   const sortedItems = items.sort((a, b) => b[order] - a[order]); //order State값이 createdAt에 있을 때는 최신순으로 정렬되고, rating일 때는 평점이 높은 베스트순으로 정렬이 됨
   const [hasNext, setHasNext] = useState(false); //초기값은 일단 false
+  const [isLoading, setIsLoading] = useState(false); // 로딩 처리하는 state
 
   const handleNewClick = () => setOrder("createdAt");
   const handleBestClick = () => setOrder("rating");
@@ -21,7 +22,19 @@ function App() {
   };
 
   const handleLoad = async (options) => {
-    const { reviews, paging } = await getReviews(options); // response body에 있는 reviews라는 값을 Destructuring 하고
+    let result;
+    try{
+      setIsLoading(true); // 리퀘스트 시작 전
+      result = await getReviews(options); // response body에 있는 reviews라는 값을 Destructuring 하고
+    }
+    catch(error){
+      console.error();
+      return;
+    } finally{ // 리퀘스트가 성공하거나 실패했을 때 실행 (오류가 나서 return하더라도 finally 블록은 실행됨!)
+      setIsLoading(false);
+    }
+    
+    const { reviews, paging } = result;
     if (options.offset === 0) {
       setItems(reviews); // offset값이 0일 때 items 전체를 바꾸고
     } else {
@@ -45,7 +58,7 @@ function App() {
       <button onClick={handleNewClick}>최신순</button>
       <button onClick={handleBestClick}>추천순</button>
       <ReviewList items={sortedItems} onDelete={handleDelete} />
-      {hasNext && <button onClick={handleLoadMore}>더 보기</button>}
+      {hasNext && <button disabled={isLoading} onClick={handleLoadMore}>더 보기</button>}
     </div>
   );
 }
